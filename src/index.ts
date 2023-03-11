@@ -1,5 +1,6 @@
 import { ArrayMutationTracker } from "./ArrayMutationTracker.js";
-import { mergesort } from "./algorithms.js";
+import { bubblesort, mergesort, quicksort } from "./algorithms.js";
+import * as sync from "./sync.js";
 import { shuffle } from "./utils.js";
 
 const canvas = document.querySelector("canvas")!;
@@ -29,13 +30,17 @@ for (let angle = 0; angle < 360; angle++) {
     draw(angle, gradient);
 }
 
+const sorts = { bubblesort, quicksort, mergesort };
+
+const sortType = sync.select(["bubblesort", "quicksort", "mergesort"], "bubblesort", document.querySelector(".select-sort")!);
+
 const tracker = new ArrayMutationTracker(slices);
 
-mergesort(tracker, (a, b) => a.angle - b.angle);
-
-const past = tracker.history();
+sorts[sortType.get()](tracker, (a, b) => a.angle - b.angle);
 
 canvas.addEventListener("click", () => {
+    const past = tracker.history();
+
     const interval = setInterval(() => {
         const entry = past.shift();
 

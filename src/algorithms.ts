@@ -48,32 +48,17 @@ export function mergesort<T>(arr: ArrayMutationTracker<T>, comparator: (a: T, b:
         for (let i = 0; i < a; i++) left[i] = arr.get(l + i);
         for (let j = 0; j < b; j++) right[j] = arr.get(m + 1 + j);
 
-        let i = 0;
-        let j = 0;
-        let k = l;
+        let i = 0, j = 0, k = l;
 
-        while (i < a && j < b) {
-            if (comparator(left[i], right[j]) <= 0) {
-                arr.set(k, left[i]);
-                i++;
-            } else {
-                arr.set(k, right[j]);
-                j++;
-            }
-            k++;
-        }
+        while (i < a && j < b)
+            arr.set(k++, comparator(left[i], right[j]) <= 0 ? left[i++] : right[j++]);
 
-        while (i < a) {
-            arr.set(k, left[i]);
-            i++;
-            k++;
-        }
+        while (i < a)
+            arr.set(k++, left[i++]);
 
-        while (j < b) {
-            arr.set(k, right[j]);
-            j++;
-            k++;
-        }
+
+        while (j < b)
+            arr.set(k++, right[j++]);
     }
 
     for (let size = 1; size <= arr.length() - 1; size = 2 * size) {

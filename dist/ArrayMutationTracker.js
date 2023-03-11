@@ -30,4 +30,8 @@ export class ArrayMutationTracker {
     latest() {
         return [...this.#history[this.#history.length - 1]];
     }
+    reset() {
+        this.#array = this.#history[0];
+        this.#history = [];
+    }
 }
